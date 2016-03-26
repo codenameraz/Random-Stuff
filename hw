@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+while True:
+    user_input = raw_input('Enter Year: ')
+    if len(user_input) is 4 and user_input.isdigit():
+     break
+    else:
+     print 'sorry, try again'
+     continue
+
+factors = ['Mkt-RF', 'SMB', 'HML', 'RF']
+
+while True:
+    print 'available factors: ', factors
+    factor_input = raw_input('please enter a factor: ')
+    if factor_input in factors:
+      break
+    else:
+      print 'Sorry, that factor does not exist.'
+      continue
+
+file = '../python_data/F-F_Research_Data_Factors_daily.txt'
+fh = open(file)
+lines = fh.readlines()[5:-1]
+
+val = []
+
+for line in lines:
+    year = line[0:4]
+    if year == user_input:
+      line = line.split()
+      mktrf = float(line[1])
+      smb = float(line[2])
+      hml = float(line[3])
+      rf = float(line[4])
+      if factor_input == 'SMB':
+          val.append(smb)
+      elif factor_input == 'Mkt-RF':
+          val.append(mktrf)
+      elif factor_input == 'HML':
+          val.append(hml)
+      elif factor_input == 'RF':
+          val.append(rf)
+
+if not val:
+    print 'no values found'
+    exit()
+
+length = len(val)
+listsum = sum(val)
+avg = length / listsum
+
+print '{} ({}): {} values, avg {}'.format(user_input, factor_input, listsum, avg)
